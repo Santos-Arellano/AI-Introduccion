@@ -3,8 +3,8 @@ Implementación del algoritmo MINIMAX para el juego de Triqui (Tic-Tac-Toe)
 Taller 4 - Inteligencia Artificial - Juegos Multijugador
 Pontificia Universidad Javeriana - Bogotá
 
-Autores: [Nombre 1, Nombre 2, Nombre 3]
-Grupo: [X]
+Autores: [Alejandra Abaunza Suárez, Daniel Santiago Avila Medina,Santos Alejandro Arellano Olarte,Jeison Camilo Alfonso Moreno]
+Grupo: [5]
 """
 
 import math
