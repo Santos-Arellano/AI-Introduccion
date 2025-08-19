@@ -12,7 +12,7 @@
 - **Tema**: Juegos Multijugador - Algoritmo MINIMAX
 - **Grupo**: [5]
 - **Integrantes**: 
-  -Alejandra Abaunza Suárez 
+-Alejandra Abaunza Suárez 
 - Daniel Santiago Avila Medina
 - Santos Alejandro Arellano Olarte
 - Jeison Camilo Alfonso Moreno
