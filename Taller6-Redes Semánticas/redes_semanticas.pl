@@ -178,18 +178,3 @@ demo :-
     
     write('6. Perfil completo de Miguel:'), nl,
     listar_propiedades(miguel).
-
-% ===================================================
-% CONSULTAS PARA PROBAR EL SISTEMA
-% ===================================================
-% Ejecuta estas consultas para ver el sistema en acción:
-%
-% demo.                                    % Demostración completa
-% obtener_propiedad(adith, altura, X).     % Altura de Adith
-% obtener_propiedad(miguel, pie_habil, X). % Pie hábil de Miguel
-% puede(miguel, patea, balon).             % ¿Miguel puede patear?
-% companeros(miguel, adith).               % ¿Son compañeros?
-% listar_propiedades(miguel).              % Todo sobre Miguel
-% listar_propiedades(millonarios).         % Info del equipo
-% objetos_de_clase(jugador_futbol, X).     % Todos los jugadores
-% objetos_de_clase(equipo_primera_division, X). % Equipos de primera
