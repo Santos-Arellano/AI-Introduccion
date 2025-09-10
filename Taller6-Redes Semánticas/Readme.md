@@ -14,14 +14,14 @@
 
 ## 📝 Descripción
 
-Este proyecto implementa un sistema de **Redes Semánticas** en Prolog para representar conocimiento sobre jugadores de fútbol y equipos. El sistema utiliza mecanismos de herencia de propiedades mediante relaciones jerárquicas (`es-un`) y de instanciación (`instancia-de`).
+Este proyecto desarrolla un sistema de **Redes Semánticas** en Prolog que modela el mundo del fútbol colombiano. Permite representar jugadores, equipos y sus características usando herencia de propiedades a través de jerarquías de clases, similar a como funciona la programación orientada a objetos.
 
 ## 🎯 Objetivos
 
-1. **Diseñar** un mecanismo de herencia de propiedades utilizando Prolog
-2. **Implementar** el ejemplo base de redes semánticas visto en clase
-3. **Ampliar** el modelo con una nueva jerarquía para equipos de fútbol
-4. **Demostrar** el funcionamiento correcto mediante consultas y pruebas
+1. **Crear** un sistema que permita heredar características entre clases relacionadas
+2. **Implementar** el ejemplo básico de jugadores de fútbol con sus propiedades
+3. **Expandir** el modelo incluyendo equipos del fútbol profesional colombiano
+4. **Validar** que el sistema funcione correctamente con consultas prácticas
 
 ## 📁 Estructura del Proyecto
 
@@ -88,181 +88,179 @@ swipl
 ?- [redes_semanticas].
 ```
 
-### 2. Ejecutar la demostración completa
+### 2. Ver el sistema en acción
 
 ```prolog
 ?- demo.
 ```
 
+Esto mostrará todas las capacidades del sistema con ejemplos prácticos.
+
 ### 3. Consultas Básicas
 
-#### Herencia de Propiedades
+#### Consultar características de los jugadores
 ```prolog
-% Obtener la altura de Adith (heredada de jugador_futbol)
+% ¿Cuál es la altura de Adith?
 ?- obtener_propiedad(adith, altura, X).
 X = 1.85.
 
-% Obtener el pie hábil de Miguel (heredado de persona)
+% ¿Con qué pie juega Miguel?
 ?- obtener_propiedad(miguel, pie_habil, X).
 X = derecho.
 ```
 
-#### Verificación de Capacidades
+#### Verificar habilidades
 ```prolog
-% ¿Puede Miguel patear un balón?
+% ¿Miguel puede patear el balón?
 ?- puede(miguel, patea, balon).
 true.
 
-% ¿Puede Adith patear un balón?
+% ¿Adith también puede hacerlo?
 ?- puede(adith, patea, balon).
 true.
 ```
 
-#### Consultas sobre Equipos
+#### Información de equipos
 ```prolog
-% Listar todas las propiedades de Millonarios
+% Ver todo sobre Millonarios
 ?- listar_propiedades(millonarios).
 
-% Obtener todos los equipos de primera división
+% ¿Qué equipos están en primera división?
 ?- objetos_de_clase(equipo_primera_division, X).
 X = millonarios ;
 X = santa_fe ;
 X = nacional.
 ```
 
-#### Relaciones entre Jugadores y Equipos
+#### Relaciones entre jugadores
 ```prolog
-% ¿En qué equipo juega Miguel?
+% ¿Dónde juega Miguel?
 ?- juega_en(miguel, X).
 X = millonarios.
 
-% ¿Son compañeros Miguel y Adith?
+% ¿Miguel y Adith son compañeros de equipo?
 ?- companeros(miguel, adith).
 true.
 ```
 
-### 4. Consultas Avanzadas
+### 4. Consultas más avanzadas
 
 ```prolog
-% Obtener todos los jugadores de fútbol
+% ¿Quiénes son todos los jugadores?
 ?- objetos_de_clase(jugador_futbol, X).
 
-% Verificar si una clase es subclase de otra
+% ¿Los defensas son un tipo de persona?
 ?- subclase_de(defensa, persona).
 
-% Obtener jugadores del mismo equipo
+% ¿Qué jugadores son compañeros de equipo?
 ?- companeros(X, Y).
 ```
 
-## 🏗️ Arquitectura del Sistema
+## 🏗️ Cómo funciona el sistema
 
-### Componentes Principales
+### Estructura principal
 
-#### 1. **Jerarquía de Clases**
-- **Personas:** `persona → hombre_adulto → jugador_futbol → {defensa, delantero}`
+#### 1. **Jerarquías de clases**
+- **Jugadores:** `persona → hombre_adulto → jugador_futbol → {defensa, delantero}`
 - **Equipos:** `organizacion → equipo_futbol → equipo_profesional → equipo_primera_division`
 
-#### 2. **Mecanismo de Herencia**
+#### 2. **Herencia de características**
+Cuando buscas una propiedad, el sistema:
+1. Primero mira si el objeto la tiene directamente
+2. Si no, busca en su clase padre
+3. Sigue subiendo por la jerarquía hasta encontrarla
+
+#### 3. **Tipos de relaciones**
+- `es_un/2`: Define jerarquías (ej: defensa es_un jugador_futbol)
+- `instancia_de/2`: Conecta objetos con clases (ej: miguel instancia_de delantero)
+- `propiedad/3`: Asigna características (ej: miguel tiene equipo millonarios)
+- `juega_en/2`: Relaciona jugadores con equipos
+- `companeros/2`: Encuentra jugadores del mismo equipo
+
+## 📊 Ejemplo de cómo se organiza la información
+
 ```prolog
-% Búsqueda de propiedades con prioridad local
-obtener_propiedad(Objeto, Atributo, Valor) :-
-    % 1. Busca propiedad directa
-    % 2. Si es instancia, busca en su clase
-    % 3. Si es clase, busca en superclases
-```
-
-#### 3. **Relaciones Implementadas**
-- `es_un/2`: Relación de subclase
-- `instancia_de/2`: Relación de pertenencia
-- `propiedad/3`: Asignación de atributos
-- `juega_en/2`: Relación jugador-equipo
-- `companeros/2`: Jugadores del mismo equipo
-
-## 📊 Modelo de Datos
-
-### Ejemplo de Estructura
-```prolog
-% Jerarquía
+% Definir jerarquías
 es_un(jugador_futbol, hombre_adulto).
 es_un(hombre_adulto, persona).
 
-% Instancias
+% Crear jugadores específicos
 instancia_de(miguel, delantero).
 instancia_de(adith, defensa).
 
-% Propiedades
-propiedad(persona, pie_habil, derecho).
-propiedad(jugador_futbol, altura, 1.85).
-propiedad(miguel, equipo, millonarios).
+% Asignar características
+propiedad(persona, pie_habil, derecho).        % Todos heredan esto
+propiedad(jugador_futbol, altura, 1.85).       % Solo los jugadores
+propiedad(miguel, equipo, millonarios).        % Solo Miguel
 ```
 
-## 🧪 Casos de Prueba
+## 🧪 Ejemplos de funcionamiento
 
-### Test 1: Herencia Simple
+### Herencia básica
 ```prolog
-% Adith hereda altura de jugador_futbol
+% Adith obtiene su altura de la clase jugador_futbol
 ?- obtener_propiedad(adith, altura, 1.85).
 true.
 ```
 
-### Test 2: Herencia Múltiple Niveles
+### Herencia de varios niveles
 ```prolog
-% Miguel hereda pie_habil de persona (3 niveles arriba)
+% Miguel hereda el pie hábil desde la clase persona (3 niveles arriba)
 ?- obtener_propiedad(miguel, pie_habil, derecho).
 true.
 ```
 
-### Test 3: Sobrescritura de Propiedades
+### Propiedades específicas por posición
 ```prolog
-% Defensa tiene su propio numero_goles que sobrescribe el de jugador_futbol
+% Los defensas tienen menos goles que los delanteros
 ?- obtener_propiedad(defensa, numero_goles, 1).
 true.
 ```
 
-### Test 4: Relaciones Entre Jerarquías
+### Relaciones entre jugadores y equipos
 ```prolog
-% Miguel y Adith son compañeros porque juegan en Millonarios
+% Miguel y Adith son compañeros porque ambos juegan en Millonarios
 ?- companeros(miguel, adith).
 true.
 ```
 
-## 📈 Ampliaciones Implementadas
+## 📈 Características implementadas
 
-### 1. **Jerarquía de Equipos** ✅
-- Nueva rama completa desde `Organización` hasta equipos específicos
-- Tres instancias de equipos: Millonarios, Santa Fe, Nacional
-- Propiedades específicas: ciudad, fundación, colores
+### 1. **Equipos de fútbol colombiano** ✅
+- Jerarquía completa desde organizaciones hasta equipos de primera división
+- Incluye los tres grandes: Millonarios, Santa Fe y Nacional
+- Cada equipo tiene su ciudad, año de fundación y colores
 
-### 2. **Relaciones Inter-jerárquicas** ✅
-- Conexión entre jugadores y equipos mediante `juega_en/2`
-- Predicado `companeros/2` para encontrar jugadores del mismo equipo
+### 2. **Conexiones entre jugadores y equipos** ✅
+- Los jugadores pueden pertenecer a equipos específicos
+- Sistema para encontrar compañeros de equipo automáticamente
 
-### 3. **Consultas Mejoradas** ✅
-- `listar_propiedades/1`: Muestra todas las propiedades de un objeto
-- `objetos_de_clase/2`: Obtiene todas las instancias de una clase
-- `demo/0`: Demostración completa del sistema
+### 3. **Consultas útiles** ✅
+- Ver todas las propiedades de cualquier objeto
+- Listar todos los miembros de una clase
+- Demostración interactiva del sistema completo
 
-## 🐛 Solución de Problemas Comunes
+## 🐛 Problemas comunes y soluciones
 
-### Error: "undefined procedure"
+### "undefined procedure" al hacer consultas
 ```prolog
-% Asegúrate de haber cargado el archivo
+% Primero carga el archivo
 ?- [redes_semanticas].
 ```
 
-### Error: "false" en consultas esperadas
+### Las consultas devuelven "false"
 ```prolog
-% Verifica la escritura exacta de los nombres
-% Los átomos en Prolog son sensibles a mayúsculas
-?- instancia_de(Miguel, delantero).  % INCORRECTO
-?- instancia_de(miguel, delantero).  % CORRECTO
+% Revisa que los nombres estén escritos exactamente igual
+% Prolog distingue entre mayúsculas y minúsculas
+?- instancia_de(Miguel, delantero).  % ❌ INCORRECTO
+?- instancia_de(miguel, delantero).  % ✅ CORRECTO
 ```
 
-### Consultas sin resultados
+### Ver todas las respuestas posibles
 ```prolog
-% Usa ; para obtener más soluciones
+% Presiona ; (punto y coma) para ver más resultados
 ?- objetos_de_clase(equipo_primera_division, X).
-X = millonarios ;  % Presiona ; para continuar
+X = millonarios ;  % Presiona ; aquí
 X = santa_fe ;
 X = nacional.
 ```
@@ -274,12 +272,14 @@ X = nacional.
 - Jorge Baier, *Redes Semánticas y PLN en Prolog*, PUC de Chile
 - Documentación SWI-Prolog: https://www.swi-prolog.org/
 
-## 🤝 Contribuciones
+## 🤝 Desarrollo del proyecto
 
-Este proyecto fue desarrollado como parte del Taller 6 del curso de Inteligencia Artificial. Las contribuciones de los integrantes incluyen:
+Este proyecto fue desarrollado colaborativamente para el Taller 6 de Inteligencia Artificial:
 
-- **[Estudiante 1]**: Implementación del mecanismo de herencia y caso base
-- **[Estudiante 2]**: Ampliación con jerarquía de equipos y documentación
+- **Implementación base**: Sistema de herencia y jugadores de fútbol
+- **Expansión**: Jerarquía de equipos del fútbol colombiano
+- **Documentación**: Guías de uso y ejemplos prácticos
+- **Pruebas**: Validación completa del funcionamiento
 
 ## 📄 Licencia
 

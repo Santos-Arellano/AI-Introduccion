@@ -1,26 +1,33 @@
 % ===================================================
 % TALLER 6 - REDES SEMÁNTICAS EN PROLOG
 % ===================================================
+% Implementación de un sistema de redes semánticas que permite
+% representar jerarquías de clases y herencia de propiedades
+
+% Evitar advertencias de predicados separados
+:- discontiguous es_un/2.
+:- discontiguous instancia_de/2.
+:- discontiguous propiedad/3.
 
 % ===================================================
-% PARTE 1: DEFINICIÓN DE LA RED SEMÁNTICA BASE
+% JERARQUÍA DE CLASES Y OBJETOS
 % ===================================================
 
-% Relaciones de herencia (es_un)
+% Jerarquía: persona -> hombre_adulto -> jugador_futbol -> defensa/delantero
 es_un(hombre_adulto, persona).
 es_un(jugador_futbol, hombre_adulto).
 es_un(defensa, jugador_futbol).
 es_un(delantero, jugador_futbol).
 
-% Relaciones de instancia (instancia_de)
+% Instancias específicas de jugadores
 instancia_de(miguel, delantero).
 instancia_de(adith, defensa).
 
 % ===================================================
-% PARTE 2: PROPIEDADES Y ATRIBUTOS
+% PROPIEDADES DE CLASES E INSTANCIAS
 % ===================================================
 
-% Propiedades directas de las clases
+% Propiedades generales por clase
 propiedad(persona, pie_habil, derecho).
 propiedad(hombre_adulto, altura, 1.80).
 propiedad(jugador_futbol, altura, 1.85).
@@ -29,46 +36,43 @@ propiedad(jugador_futbol, patea, balon).
 propiedad(defensa, numero_goles, 1).
 propiedad(delantero, numero_goles, 5).
 
-% Propiedades específicas de instancias
+% Propiedades individuales de los jugadores
 propiedad(miguel, equipo, millonarios).
 propiedad(adith, equipo, millonarios).
 
 % ===================================================
-% PARTE 3: MECANISMO DE HERENCIA
+% REGLAS DE HERENCIA
 % ===================================================
 
-% Regla para verificar si X es subclase de Y (transitivo)
+% Determina si una clase hereda de otra (transitivo)
 subclase_de(X, Y) :- es_un(X, Y).
 subclase_de(X, Y) :- 
     es_un(X, Z), 
     subclase_de(Z, Y).
 
-% Regla para verificar si X pertenece a la clase Y
+% Verifica si un objeto pertenece a una clase
 pertenece_a(X, Y) :- instancia_de(X, Y).
 pertenece_a(X, Y) :- 
     instancia_de(X, Z), 
     subclase_de(Z, Y).
 
 % ===================================================
-% PARTE 4: HERENCIA DE PROPIEDADES
+% SISTEMA DE HERENCIA DE PROPIEDADES
 % ===================================================
 
-% Obtener valor de una propiedad con herencia
+% Busca una propiedad, primero en el objeto, luego en su jerarquía
 obtener_propiedad(Objeto, Atributo, Valor) :-
-    % Primero busca si el objeto tiene la propiedad directamente
     propiedad(Objeto, Atributo, Valor), !.
 
 obtener_propiedad(Objeto, Atributo, Valor) :-
-    % Si es una instancia, busca en su clase
     instancia_de(Objeto, Clase),
     obtener_propiedad_clase(Clase, Atributo, Valor), !.
 
 obtener_propiedad(Clase, Atributo, Valor) :-
-    % Si es una clase, busca en sus superclases
     es_un(Clase, Superclase),
     obtener_propiedad_clase(Superclase, Atributo, Valor).
 
-% Buscar propiedad en una clase o sus superclases
+% Auxiliar para buscar en la jerarquía de clases
 obtener_propiedad_clase(Clase, Atributo, Valor) :-
     propiedad(Clase, Atributo, Valor), !.
 
@@ -77,45 +81,45 @@ obtener_propiedad_clase(Clase, Atributo, Valor) :-
     obtener_propiedad_clase(Superclase, Atributo, Valor).
 
 % ===================================================
-% PARTE 5: CONSULTAS ÚTILES
+% CONSULTAS Y UTILIDADES
 % ===================================================
 
-% Listar todas las propiedades de un objeto
+% Muestra todas las propiedades que tiene un objeto
 listar_propiedades(Objeto) :-
     write('Propiedades de '), write(Objeto), write(':'), nl,
     forall(obtener_propiedad(Objeto, Atributo, Valor),
            (write('  '), write(Atributo), write(' = '), write(Valor), nl)).
 
-% Verificar si un objeto puede realizar una acción
+% Verifica si un objeto puede realizar una acción
 puede(Objeto, Accion, Sobre) :-
     obtener_propiedad(Objeto, Accion, Sobre).
 
-% Obtener todos los objetos de una clase
+% Lista todos los objetos que pertenecen a una clase
 objetos_de_clase(Clase, Objeto) :-
     pertenece_a(Objeto, Clase).
 
 % ===================================================
-% PARTE 6: AMPLIACIÓN CON JERARQUÍA DE EQUIPOS
+% EQUIPOS DE FÚTBOL COLOMBIANO
 % ===================================================
 
-% Nueva jerarquía para equipos de fútbol
+% Jerarquía de equipos deportivos
 es_un(equipo_futbol, organizacion).
 es_un(equipo_profesional, equipo_futbol).
 es_un(equipo_primera_division, equipo_profesional).
 
-% Instancias de equipos
+% Los tres grandes del fútbol colombiano
 instancia_de(millonarios, equipo_primera_division).
 instancia_de(santa_fe, equipo_primera_division).
 instancia_de(nacional, equipo_primera_division).
 
-% Propiedades de la jerarquía de equipos
+% Características comunes de los equipos
 propiedad(organizacion, tipo, deportiva).
 propiedad(equipo_futbol, deporte, futbol).
 propiedad(equipo_futbol, numero_jugadores, 11).
 propiedad(equipo_profesional, tiene_estadio, si).
 propiedad(equipo_primera_division, division, primera).
 
-% Propiedades específicas de equipos
+% Datos específicos de cada equipo
 propiedad(millonarios, ciudad, bogota).
 propiedad(millonarios, fundacion, 1946).
 propiedad(millonarios, colores, 'azul y blanco').
@@ -126,23 +130,23 @@ propiedad(nacional, ciudad, medellin).
 propiedad(nacional, fundacion, 1947).
 propiedad(nacional, colores, 'verde y blanco').
 
-% Relación jugador-equipo
+% Encuentra en qué equipo juega alguien
 juega_en(Jugador, Equipo) :-
     obtener_propiedad(Jugador, equipo, Equipo).
 
-% Jugadores del mismo equipo
+% Encuentra jugadores del mismo equipo
 companeros(Jugador1, Jugador2) :-
     juega_en(Jugador1, Equipo),
     juega_en(Jugador2, Equipo),
     Jugador1 \= Jugador2.
 
 % ===================================================
-% PARTE 7: CONSULTAS DE DEMOSTRACIÓN
+% DEMOSTRACIÓN DEL SISTEMA
 % ===================================================
 
-% Demostrar el funcionamiento del sistema
+% Muestra las capacidades del sistema de redes semánticas
 demo :-
-    nl, write('=== DEMOSTRACIÓN DE REDES SEMÁNTICAS ==='), nl, nl,
+    nl, write('=== SISTEMA DE REDES SEMÁNTICAS ==='), nl, nl,
     
     write('1. Herencia de propiedades:'), nl,
     write('   Altura de Adith: '),
@@ -153,39 +157,39 @@ demo :-
     obtener_propiedad(miguel, pie_habil, PieMiguel),
     write(PieMiguel), nl, nl,
     
-    write('2. Propiedades específicas vs heredadas:'), nl,
-    write('   Goles de un defensa genérico: '),
+    write('2. Diferencias entre posiciones:'), nl,
+    write('   Goles típicos de un defensa: '),
     obtener_propiedad(defensa, numero_goles, GolesDefensa),
     write(GolesDefensa), nl,
-    write('   Goles de un delantero genérico: '),
+    write('   Goles típicos de un delantero: '),
     obtener_propiedad(delantero, numero_goles, GolesDelantero),
     write(GolesDelantero), nl, nl,
     
-    write('3. Verificación de acciones:'), nl,
+    write('3. Capacidades de los jugadores:'), nl,
     write('   ¿Puede Miguel patear un balón? '),
     (puede(miguel, patea, balon) -> write('Sí') ; write('No')), nl, nl,
     
-    write('4. Compañeros de equipo:'), nl,
+    write('4. Relaciones entre jugadores:'), nl,
     write('   ¿Son Miguel y Adith compañeros? '),
     (companeros(miguel, adith) -> write('Sí') ; write('No')), nl, nl,
     
-    write('5. Propiedades del equipo Millonarios:'), nl,
+    write('5. Información del equipo Millonarios:'), nl,
     listar_propiedades(millonarios), nl,
     
-    write('6. Todas las propiedades de Miguel:'), nl,
+    write('6. Perfil completo de Miguel:'), nl,
     listar_propiedades(miguel).
 
 % ===================================================
-% CONSULTAS DE EJEMPLO
+% CONSULTAS PARA PROBAR EL SISTEMA
 % ===================================================
-
-% Para ejecutar las consultas:
-% ?- demo.
-% ?- obtener_propiedad(adith, altura, X).
-% ?- obtener_propiedad(miguel, pie_habil, X).
-% ?- puede(miguel, patea, balon).
-% ?- companeros(miguel, adith).
-% ?- listar_propiedades(miguel).
-% ?- listar_propiedades(millonarios).
-% ?- objetos_de_clase(jugador_futbol, X).
-% ?- objetos_de_clase(equipo_primera_division, X).
+% Ejecuta estas consultas para ver el sistema en acción:
+%
+% demo.                                    % Demostración completa
+% obtener_propiedad(adith, altura, X).     % Altura de Adith
+% obtener_propiedad(miguel, pie_habil, X). % Pie hábil de Miguel
+% puede(miguel, patea, balon).             % ¿Miguel puede patear?
+% companeros(miguel, adith).               % ¿Son compañeros?
+% listar_propiedades(miguel).              % Todo sobre Miguel
+% listar_propiedades(millonarios).         % Info del equipo
+% objetos_de_clase(jugador_futbol, X).     % Todos los jugadores
+% objetos_de_clase(equipo_primera_division, X). % Equipos de primera
