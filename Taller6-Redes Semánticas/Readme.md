@@ -395,6 +395,60 @@ Este proyecto fue desarrollado colaborativamente para el Taller 6 de Inteligenci
 - **Documentación**: Guías de uso y ejemplos prácticos
 - **Pruebas**: Validación completa del funcionamiento
 
+## 💡 Consejos para Usar los Comandos
+
+### En Prolog Online (SWISH)
+1. **Copia y pega** el código completo de `redes_semanticas.pl`
+2. **Ejecuta las consultas** una por una en la consola
+3. **Usa punto y coma (;)** para ver más soluciones: `?- companeros(X, Y).` luego presiona `;`
+4. **Termina con punto (.)** para finalizar una consulta
+
+### Navegación de Resultados
+- **Variables libres**: `?- obtener_propiedad(X, altura, Y).` muestra todos los objetos con altura
+- **Múltiples soluciones**: Presiona `;` para ver la siguiente solución o `.` para terminar
+- **Consultas específicas**: `?- obtener_propiedad(miguel, altura, 1.85).` verifica si es verdadero
+
+### Patrones Útiles
+```prolog
+% Buscar por patrón
+?- obtener_propiedad(X, ciudad, bogota).     % Todo lo que esté en Bogotá
+?- obtener_propiedad(miguel, X, Y).          % Todas las propiedades de Miguel
+?- pertenece_a(X, jugador_futbol).           % Todos los jugadores
+
+% Verificar relaciones
+?- subclase_de(defensa, Y).                  % ¿De qué hereda defensa?
+?- pertenece_a(miguel, Y).                   % ¿A qué clases pertenece Miguel?
+
+% Explorar el sistema
+?- propiedad(X, Y, Z).                       % Ver todas las propiedades definidas
+?- es_un(X, Y).                              % Ver toda la jerarquía
+```
+
+### 🎯 Consultas Recomendadas para Empezar
+```prolog
+% 1. Primero ejecuta la demostración
+?- demo.
+
+% 2. Explora las propiedades de los jugadores
+?- listar_propiedades(miguel).
+?- listar_propiedades(adith).
+
+% 3. Verifica la herencia
+?- obtener_propiedad(miguel, pie_habil, X).
+?- obtener_propiedad(adith, altura, X).
+
+% 4. Prueba las capacidades
+?- puede(miguel, patea, balon).
+
+% 5. Explora los equipos
+?- listar_propiedades(millonarios).
+?- companeros(miguel, adith).
+
+% 6. Descubre el sistema
+?- objetos_de_clase(jugador_futbol, X).
+?- objetos_de_clase(equipo_primera_division, X).
+```
+
 ## 📄 Licencia
 
 Este proyecto es de uso académico para el curso de Inteligencia Artificial.
