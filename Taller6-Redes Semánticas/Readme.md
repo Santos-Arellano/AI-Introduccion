@@ -88,72 +88,186 @@ swipl
 ?- [redes_semanticas].
 ```
 
-### 2. Ver el sistema en acción
+## 📝 Comandos y Consultas del Sistema
 
+### 🎯 Consulta Principal - Demostración
 ```prolog
 ?- demo.
 ```
+**Descripción**: Ejecuta una demostración completa del sistema mostrando herencia, capacidades, relaciones y perfiles.
 
-Esto mostrará todas las capacidades del sistema con ejemplos prácticos.
+### 🔍 Consultas de Propiedades
 
-### 3. Consultas Básicas
-
-#### Consultar características de los jugadores
+#### Obtener propiedades específicas
 ```prolog
-% ¿Cuál es la altura de Adith?
-?- obtener_propiedad(adith, altura, X).
-X = 1.85.
-
-% ¿Con qué pie juega Miguel?
-?- obtener_propiedad(miguel, pie_habil, X).
-X = derecho.
+?- obtener_propiedad(Objeto, Atributo, Valor).
+```
+**Ejemplos**:
+```prolog
+?- obtener_propiedad(miguel, altura, X).        % Altura de Miguel
+?- obtener_propiedad(adith, pie_habil, X).      % Pie hábil de Adith
+?- obtener_propiedad(miguel, numero_goles, X).  % Goles promedio de Miguel
+?- obtener_propiedad(defensa, numero_goles, X). % Goles típicos de un defensa
+?- obtener_propiedad(millonarios, ciudad, X).   % Ciudad del equipo Millonarios
+?- obtener_propiedad(nacional, fundacion, X).   % Año de fundación del Nacional
 ```
 
-#### Verificar habilidades
+#### Listar todas las propiedades de un objeto
 ```prolog
-% ¿Miguel puede patear el balón?
-?- puede(miguel, patea, balon).
-true.
-
-% ¿Adith también puede hacerlo?
-?- puede(adith, patea, balon).
-true.
+?- listar_propiedades(Objeto).
+```
+**Ejemplos**:
+```prolog
+?- listar_propiedades(miguel).      % Todas las propiedades de Miguel
+?- listar_propiedades(adith).       % Todas las propiedades de Adith
+?- listar_propiedades(millonarios). % Todas las propiedades de Millonarios
+?- listar_propiedades(santa_fe).    % Todas las propiedades de Santa Fe
+?- listar_propiedades(nacional).    % Todas las propiedades del Nacional
 ```
 
-#### Información de equipos
-```prolog
-% Ver todo sobre Millonarios
-?- listar_propiedades(millonarios).
+### ⚽ Consultas de Capacidades y Acciones
 
-% ¿Qué equipos están en primera división?
-?- objetos_de_clase(equipo_primera_division, X).
-X = millonarios ;
-X = santa_fe ;
-X = nacional.
+#### Verificar si alguien puede hacer algo
+```prolog
+?- puede(Objeto, Accion, Sobre).
+```
+**Ejemplos**:
+```prolog
+?- puede(miguel, patea, balon).  % ¿Puede Miguel patear un balón?
+?- puede(adith, patea, balon).   % ¿Puede Adith patear un balón?
+?- puede(X, patea, balon).       % ¿Quién puede patear un balón?
 ```
 
-#### Relaciones entre jugadores
-```prolog
-% ¿Dónde juega Miguel?
-?- juega_en(miguel, X).
-X = millonarios.
+### 👥 Consultas de Relaciones
 
-% ¿Miguel y Adith son compañeros de equipo?
-?- companeros(miguel, adith).
-true.
+#### Verificar compañeros de equipo
+```prolog
+?- companeros(Jugador1, Jugador2).
+```
+**Ejemplos**:
+```prolog
+?- companeros(miguel, adith).    % ¿Son Miguel y Adith compañeros?
+?- companeros(miguel, X).        % ¿Quiénes son compañeros de Miguel?
+?- companeros(X, Y).             % Encontrar todos los pares de compañeros
 ```
 
-### 4. Consultas más avanzadas
-
+#### Verificar en qué equipo juega alguien
 ```prolog
-% ¿Quiénes son todos los jugadores?
-?- objetos_de_clase(jugador_futbol, X).
+?- juega_en(Jugador, Equipo).
+```
+**Ejemplos**:
+```prolog
+?- juega_en(miguel, X).          % ¿En qué equipo juega Miguel?
+?- juega_en(adith, X).           % ¿En qué equipo juega Adith?
+?- juega_en(X, millonarios).     % ¿Quién juega en Millonarios?
+```
 
-% ¿Los defensas son un tipo de persona?
-?- subclase_de(defensa, persona).
+### 🏗️ Consultas de Jerarquías y Clasificación
 
-% ¿Qué jugadores son compañeros de equipo?
-?- companeros(X, Y).
+#### Verificar pertenencia a clases
+```prolog
+?- pertenece_a(Objeto, Clase).
+```
+**Ejemplos**:
+```prolog
+?- pertenece_a(miguel, persona).           % ¿Miguel es una persona?
+?- pertenece_a(adith, jugador_futbol).     % ¿Adith es jugador de fútbol?
+?- pertenece_a(millonarios, organizacion). % ¿Millonarios es una organización?
+?- pertenece_a(X, delantero).              % ¿Quién es delantero?
+```
+
+#### Verificar relaciones de herencia entre clases
+```prolog
+?- subclase_de(ClaseHija, ClasePadre).
+```
+**Ejemplos**:
+```prolog
+?- subclase_de(defensa, persona).                    % ¿Defensa hereda de persona?
+?- subclase_de(equipo_primera_division, organizacion). % ¿Equipos de primera son organizaciones?
+?- subclase_de(X, jugador_futbol).                   % ¿Qué clases heredan de jugador_futbol?
+```
+
+#### Listar objetos de una clase específica
+```prolog
+?- objetos_de_clase(Clase, Objeto).
+```
+**Ejemplos**:
+```prolog
+?- objetos_de_clase(jugador_futbol, X).        % ¿Quiénes son jugadores de fútbol?
+?- objetos_de_clase(equipo_primera_division, X). % ¿Qué equipos están en primera división?
+?- objetos_de_clase(persona, X).               % ¿Quiénes son personas?
+?- objetos_de_clase(delantero, X).             % ¿Quiénes son delanteros?
+?- objetos_de_clase(defensa, X).               % ¿Quiénes son defensas?
+```
+
+### 🔎 Consultas Avanzadas con Variables
+
+#### Encontrar todos los valores de un atributo
+```prolog
+?- obtener_propiedad(_, Atributo, Valor).
+```
+**Ejemplos**:
+```prolog
+?- obtener_propiedad(_, ciudad, X).      % Todas las ciudades mencionadas
+?- obtener_propiedad(_, altura, X).      % Todas las alturas definidas
+?- obtener_propiedad(_, numero_goles, X). % Todos los promedios de goles
+?- obtener_propiedad(_, colores, X).     % Todos los colores de equipos
+```
+
+#### Encontrar todos los objetos con una propiedad específica
+```prolog
+?- obtener_propiedad(Objeto, Atributo, ValorEspecifico).
+```
+**Ejemplos**:
+```prolog
+?- obtener_propiedad(X, ciudad, bogota).    % ¿Qué está en Bogotá?
+?- obtener_propiedad(X, altura, 1.85).      % ¿Quién mide 1.85?
+?- obtener_propiedad(X, deporte, futbol).   % ¿Qué practica fútbol?
+?- obtener_propiedad(X, pie_habil, derecho). % ¿Quién es diestro?
+```
+
+### 📊 Consultas con Findall (Recopilar Resultados)
+
+#### Obtener listas completas
+```prolog
+?- findall(Variable, Condicion, Lista).
+```
+**Ejemplos**:
+```prolog
+% Todos los jugadores
+?- findall(X, pertenece_a(X, jugador_futbol), Jugadores).
+
+% Todos los equipos
+?- findall(X, pertenece_a(X, equipo_primera_division), Equipos).
+
+% Todas las ciudades
+?- findall(Ciudad, obtener_propiedad(_, ciudad, Ciudad), Ciudades).
+
+% Todos los años de fundación
+?- findall(Año, obtener_propiedad(_, fundacion, Año), Años).
+
+% Todas las propiedades de una clase
+?- findall(Prop-Valor, obtener_propiedad(jugador_futbol, Prop, Valor), Props).
+```
+
+### 🎮 Consultas Interactivas
+
+#### Explorar el sistema paso a paso
+```prolog
+% Ver la jerarquía completa
+?- es_un(X, Y).
+
+% Ver todas las instancias
+?- instancia_de(X, Y).
+
+% Ver todas las propiedades definidas
+?- propiedad(X, Y, Z).
+
+% Verificar herencia transitiva
+?- subclase_de(X, Y).
+
+% Explorar todas las relaciones
+?- pertenece_a(X, Y).
 ```
 
 ## 🏗️ Cómo funciona el sistema
