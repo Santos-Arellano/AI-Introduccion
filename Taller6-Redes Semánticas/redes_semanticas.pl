@@ -144,37 +144,100 @@ companeros(Jugador1, Jugador2) :-
 % DEMOSTRACIÓN DEL SISTEMA
 % ===================================================
 
-% Muestra las capacidades del sistema de redes semánticas
+% Muestra las capacidades completas del sistema de redes semánticas
 demo :-
-    nl, write('=== SISTEMA DE REDES SEMÁNTICAS ==='), nl, nl,
+    nl, write('╔══════════════════════════════════════════════════════════╗'), nl,
+    write('║           SISTEMA DE REDES SEMÁNTICAS EN PROLOG         ║'), nl,
+    write('║              Demostración Completa del Sistema           ║'), nl,
+    write('╚══════════════════════════════════════════════════════════╝'), nl, nl,
     
-    write('1. Herencia de propiedades:'), nl,
-    write('   Altura de Adith: '),
+    % Sección 1: Herencia Multinivel
+    write('🔗 1. HERENCIA MULTINIVEL DE PROPIEDADES'), nl,
+    write('   ─────────────────────────────────────────'), nl,
+    write('   • Adith (defensa) hereda altura de jugador_futbol: '),
     obtener_propiedad(adith, altura, AlturaAdith),
-    write(AlturaAdith), nl,
+    write(AlturaAdith), write(' metros'), nl,
     
-    write('   Pie hábil de Miguel: '),
+    write('   • Miguel (delantero) hereda pie hábil de persona: '),
     obtener_propiedad(miguel, pie_habil, PieMiguel),
-    write(PieMiguel), nl, nl,
+    write(PieMiguel), nl,
     
-    write('2. Diferencias entre posiciones:'), nl,
-    write('   Goles típicos de un defensa: '),
+    write('   • Ambos heredan la capacidad de patear de jugador_futbol'), nl, nl,
+    
+    % Sección 2: Especialización por Posición
+    write('⚽ 2. ESPECIALIZACIÓN POR POSICIÓN'), nl,
+    write('   ──────────────────────────────────'), nl,
     obtener_propiedad(defensa, numero_goles, GolesDefensa),
-    write(GolesDefensa), nl,
-    write('   Goles típicos de un delantero: '),
     obtener_propiedad(delantero, numero_goles, GolesDelantero),
-    write(GolesDelantero), nl, nl,
+    write('   • Defensas (como Adith): '), write(GolesDefensa), write(' goles promedio'), nl,
+    write('   • Delanteros (como Miguel): '), write(GolesDelantero), write(' goles promedio'), nl,
+    write('   → La especialización sobrescribe propiedades generales'), nl, nl,
     
-    write('3. Capacidades de los jugadores:'), nl,
-    write('   ¿Puede Miguel patear un balón? '),
-    (puede(miguel, patea, balon) -> write('Sí') ; write('No')), nl, nl,
+    % Sección 3: Verificación de Capacidades
+    write('🎯 3. VERIFICACIÓN DE CAPACIDADES'), nl,
+    write('   ─────────────────────────────────'), nl,
+    write('   • ¿Miguel puede patear el balón? '),
+    (puede(miguel, patea, balon) -> 
+        write('✓ SÍ - Heredado de jugador_futbol') ; 
+        write('✗ NO')), nl,
+    write('   • ¿Adith puede patear el balón? '),
+    (puede(adith, patea, balon) -> 
+        write('✓ SÍ - Heredado de jugador_futbol') ; 
+        write('✗ NO')), nl, nl,
     
-    write('4. Relaciones entre jugadores:'), nl,
-    write('   ¿Son Miguel y Adith compañeros? '),
-    (companeros(miguel, adith) -> write('Sí') ; write('No')), nl, nl,
+    % Sección 4: Relaciones y Equipos
+    write('👥 4. RELACIONES ENTRE JUGADORES'), nl,
+    write('   ──────────────────────────────────'), nl,
+    obtener_propiedad(miguel, equipo, EquipoMiguel),
+    obtener_propiedad(adith, equipo, EquipoAdith),
+    write('   • Miguel juega en: '), write(EquipoMiguel), nl,
+    write('   • Adith juega en: '), write(EquipoAdith), nl,
+    write('   • ¿Son compañeros de equipo? '),
+    (companeros(miguel, adith) -> 
+        write('✓ SÍ - Ambos en '), write(EquipoMiguel) ; 
+        write('✗ NO')), nl, nl,
     
-    write('5. Información del equipo Millonarios:'), nl,
-    listar_propiedades(millonarios), nl,
+    % Sección 5: Información Detallada de Equipos
+    write('🏟️  5. INFORMACIÓN DEL EQUIPO MILLONARIOS'), nl,
+    write('   ────────────────────────────────────────'), nl,
+    obtener_propiedad(millonarios, ciudad, Ciudad),
+    obtener_propiedad(millonarios, fundacion, Fundacion),
+    obtener_propiedad(millonarios, colores, Colores),
+    obtener_propiedad(millonarios, deporte, Deporte),
+    write('   • Deporte: '), write(Deporte), nl,
+    write('   • Ciudad: '), write(Ciudad), nl,
+    write('   • Fundación: '), write(Fundacion), nl,
+    write('   • Colores: '), write(Colores), nl, nl,
     
-    write('6. Perfil completo de Miguel:'), nl,
-    listar_propiedades(miguel).
+    % Sección 6: Perfiles Completos
+    write('📋 6. PERFIL COMPLETO DE LOS JUGADORES'), nl,
+    write('   ───────────────────────────────────────'), nl,
+    write('   ▶ MIGUEL (Delantero):'), nl,
+    mostrar_perfil_jugador(miguel),
+    nl,
+    write('   ▶ ADITH (Defensa):'), nl,
+    mostrar_perfil_jugador(adith),
+    nl,
+    
+    % Sección 7: Resumen del Sistema
+    write('🎉 7. RESUMEN DEL SISTEMA'), nl,
+    write('   ──────────────────────'), nl,
+    findall(J, pertenece_a(J, jugador_futbol), Jugadores),
+    findall(E, pertenece_a(E, equipo_primera_division), Equipos),
+    length(Jugadores, NumJugadores),
+    length(Equipos, NumEquipos),
+    write('   • Jugadores registrados: '), write(NumJugadores), nl,
+    write('   • Equipos de primera división: '), write(NumEquipos), nl,
+    write('   • Niveles de herencia: 4 (persona → hombre_adulto → jugador_futbol → posición)'), nl,
+    write('   • Sistema completamente funcional con herencia multinivel ✓'), nl.
+
+% Auxiliar para mostrar perfil detallado de un jugador
+mostrar_perfil_jugador(Jugador) :-
+    findall(Atributo=Valor, obtener_propiedad(Jugador, Atributo, Valor), Propiedades),
+    mostrar_propiedades_formateadas(Propiedades).
+
+% Auxiliar para mostrar propiedades con formato mejorado
+mostrar_propiedades_formateadas([]).
+mostrar_propiedades_formateadas([Atributo=Valor|Resto]) :-
+    write('     • '), write(Atributo), write(': '), write(Valor), nl,
+    mostrar_propiedades_formateadas(Resto).
