@@ -1,0 +1,202 @@
+% python forward_chaining.py
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                   SISTEMA DE INFERENCIA - FORWARD CHAINING                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+################################################################################
+# EJEMPLO 1: SISTEMA DE LAS DIAPOSITIVAS DE CLASE
+################################################################################
+Regla agregada: R1: Si A & N => E
+Regla agregada: R2: Si A => M
+Regla agregada: R3: Si D & M => Z
+Regla agregada: R4: Si Q & ¬W & ¬Z => N
+Regla agregada: R5: Si Z & L => S
+Regla agregada: R6: Si L & M => E
+Regla agregada: R7: Si B & C => Q
+
+Hechos iniciales: A, L
+
+================================================================================
+INICIANDO PROCESO DE INFERENCIA - FORWARD CHAINING
+================================================================================
+
+Hechos iniciales:
+  1. A
+  2. L
+
+--- Iteración 1 ---
+
+Evaluando R1:
+  Premisas: A & N
+    ✓ 'A' - VERDADERO
+    ✗ 'N' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R2:
+  Premisas: A
+    ✓ 'A' - VERDADERO
+  → ¡REGLA R2 DISPARADA! Nuevo hecho: M
+
+Evaluando R3:
+  Premisas: D & M
+    ✗ 'D' - FALSO/DESCONOCIDO
+    ✓ 'M' - VERDADERO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R4:
+  Premisas: Q & ¬W & ¬Z
+    ✗ 'Q' - FALSO/DESCONOCIDO
+    ✗ '¬W' - FALSO/DESCONOCIDO
+    ✗ '¬Z' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R5:
+  Premisas: Z & L
+    ✗ 'Z' - FALSO/DESCONOCIDO
+    ✓ 'L' - VERDADERO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R6:
+  Premisas: L & M
+    ✓ 'L' - VERDADERO
+    ✓ 'M' - VERDADERO
+  → ¡REGLA R6 DISPARADA! Nuevo hecho: E
+
+Evaluando R7:
+  Premisas: B & C
+    ✗ 'B' - FALSO/DESCONOCIDO
+    ✗ 'C' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+--- Iteración 2 ---
+
+Evaluando R1:
+  Premisas: A & N
+    ✓ 'A' - VERDADERO
+    ✗ 'N' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R3:
+  Premisas: D & M
+    ✗ 'D' - FALSO/DESCONOCIDO
+    ✓ 'M' - VERDADERO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R4:
+  Premisas: Q & ¬W & ¬Z
+    ✗ 'Q' - FALSO/DESCONOCIDO
+    ✗ '¬W' - FALSO/DESCONOCIDO
+    ✗ '¬Z' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R5:
+  Premisas: Z & L
+    ✗ 'Z' - FALSO/DESCONOCIDO
+    ✓ 'L' - VERDADERO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando R7:
+  Premisas: B & C
+    ✗ 'B' - FALSO/DESCONOCIDO
+    ✗ 'C' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+No se generaron nuevos hechos en esta iteración.
+
+================================================================================
+PROCESO DE INFERENCIA COMPLETADO
+================================================================================
+
+Hechos finales:
+  1. A
+  2. E
+  3. L
+  4. M
+
+
+
+RESUMEN DE LA INFERENCIA:
+Hechos iniciales: {A, L}
+Hechos finales: {A, E, L, M}
+
+Secuencia de inferencias:
+1. Primera iteración: A => M (por R2), obtenemos {A, L, M}
+2. Segunda iteración: L & M => E (por R6), obtenemos {A, L, M, E}
+3. Tercera iteración: No se pueden disparar más reglas
+
+################################################################################
+# EJEMPLO 2: SISTEMA DE PRONÓSTICO DEL CLIMA (WEATHER FORECASTING)
+################################################################################
+
+Reglas del sistema:
+  Rule I: Si we suspect temperature is less than 20° & there is humidity in the air => there are chances of rain
+  Rule II: Si Sun is behind the clouds & air is very cool => we suspect temperature is less than 20°
+  Rule III: Si air is very heavy => there is humidity in the air
+
+Hechos iniciales proporcionados:
+  1. Sun is behind the clouds
+  2. Air is very heavy and cool
+
+================================================================================
+INICIANDO PROCESO DE INFERENCIA - FORWARD CHAINING
+================================================================================
+
+Hechos iniciales:
+  1. air is very heavy
+  2. Sun is behind the clouds
+  3. air is very cool
+
+--- Iteración 1 ---
+
+Evaluando Rule I:
+  Premisas: we suspect temperature is less than 20° & there is humidity in the air
+    ✗ 'we suspect temperature is less than 20°' - FALSO/DESCONOCIDO
+    ✗ 'there is humidity in the air' - FALSO/DESCONOCIDO
+  → Regla NO puede dispararse (faltan premisas)
+
+Evaluando Rule II:
+  Premisas: Sun is behind the clouds & air is very cool
+    ✓ 'Sun is behind the clouds' - VERDADERO
+    ✓ 'air is very cool' - VERDADERO
+  → ¡REGLA Rule II DISPARADA! Nuevo hecho: we suspect temperature is less than 20°
+
+Evaluando Rule III:
+  Premisas: air is very heavy
+    ✓ 'air is very heavy' - VERDADERO
+  → ¡REGLA Rule III DISPARADA! Nuevo hecho: there is humidity in the air
+
+--- Iteración 2 ---
+
+Evaluando Rule I:
+  Premisas: we suspect temperature is less than 20° & there is humidity in the air
+    ✓ 'we suspect temperature is less than 20°' - VERDADERO
+    ✓ 'there is humidity in the air' - VERDADERO
+  → ¡REGLA Rule I DISPARADA! Nuevo hecho: there are chances of rain
+
+--- Iteración 3 ---
+
+No se generaron nuevos hechos en esta iteración.
+
+================================================================================
+PROCESO DE INFERENCIA COMPLETADO
+================================================================================
+
+Hechos finales:
+  1. Sun is behind the clouds
+  2. air is very cool
+  3. air is very heavy
+  4. there are chances of rain
+  5. there is humidity in the air
+  6. we suspect temperature is less than 20°
+
+
+
+VERIFICACIÓN DEL RESULTADO:
+✓ ÉXITO: Se ha concluido que 'there are chances of rain'
+
+Cadena de razonamiento:
+1. 'air is very cool' & 'Sun is behind the clouds' => 'we suspect temperature is less than 20°'
+2. 'air is very heavy' => 'there is humidity in the air'
+3. 'we suspect temperature is less than 20°' & 'there is humidity in the air' => 'there are chances of rain'
+
+Programa finalizado.
