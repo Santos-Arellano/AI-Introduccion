@@ -1,0 +1,21 @@
+# Red Bayesiana para Diagnóstico Médico
+# Ejemplo más complejo con 5 nodos
+#
+# Estructura:
+#
+#      Enfermedad_A    Enfermedad_B
+#           |               |
+#           |               |
+#           v               v
+#       Sintoma_1       Sintoma_2
+#           \              /
+#            \            /
+#             \          /
+#              v        v
+#            Resultado_Prueba
+
+# Relaciones causales
+Enfermedad_A Sintoma_1
+Enfermedad_B Sintoma_2
+Sintoma_1 Resultado_Prueba
+Sintoma_2 Resultado_Prueba

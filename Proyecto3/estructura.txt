@@ -1,0 +1,5 @@
+# Estructura de la Red Bayesiana (Lluvia-Aspersor-Césped Mojado)
+# Formato: nodo_padre nodo_hijo
+
+Lluvia Cesped_Mojado
+Aspersor Cesped_Mojado

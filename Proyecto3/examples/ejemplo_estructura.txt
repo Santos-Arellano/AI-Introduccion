@@ -1,0 +1,14 @@
+# Estructura de la Red Bayesiana
+# Formato: nodo_padre nodo_hijo
+# Este es el ejemplo clásico de Lluvia-Aspersor-Césped Mojado
+
+# Red Bayesiana de ejemplo:
+#
+#    Lluvia      Aspersor
+#       \          /
+#        \        /
+#         \      /
+#       Cesped_Mojado
+
+Lluvia Cesped_Mojado
+Aspersor Cesped_Mojado

@@ -1,0 +1,15 @@
+# Probabilidades para la red Lluvia-Aspersor-Césped Mojado
+
+NODO: Lluvia
+| True | 0.2
+| False | 0.8
+
+NODO: Aspersor
+| True | 0.1
+| False | 0.9
+
+NODO: Cesped_Mojado
+True True | True | 0.99
+True False | True | 0.90
+False True | True | 0.90
+False False | True | 0.01
